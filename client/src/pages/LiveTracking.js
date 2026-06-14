@@ -25,7 +25,7 @@ const riderIcon = {
 const LiveTracking = () => {
   const [riders, setRiders] = useState([]);
   const [selectedRider, setSelectedRider] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",

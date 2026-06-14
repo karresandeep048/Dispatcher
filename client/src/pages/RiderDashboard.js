@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import api, { SOCKET_URL } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import StatusBadge from "../components/StatusBadge";
-import { MapPin, Phone, Package, Navigation, CheckCircle2, Power } from "lucide-react";
+import { Package, Navigation, CheckCircle2, Power } from "lucide-react";
 
 const RiderDashboard = () => {
   const [orders, setOrders] = useState([]);

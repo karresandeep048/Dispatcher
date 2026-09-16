@@ -53,13 +53,31 @@ const LiveTracking = () => {
 
     const socket = io(SOCKET_URL);
     socket.on("riderLocationBroadcast", (data) => {
-      setRiders((prev) =>
-        prev.map((r) =>
-          r._id === data.riderId
-            ? { ...r, currentLocation: { lat: data.lat, lng: data.lng, updatedAt: new Date() } }
-            : r
-        )
-      );
+      setRiders((prev) => {
+        const exists = prev.some((r) => r._id === data.riderId);
+        if (exists) {
+          return prev.map((r) =>
+            r._id === data.riderId
+              ? {
+                  ...r,
+                  name: data.name || r.name,
+                  vehicleNumber: data.vehicleNumber || r.vehicleNumber,
+                  currentLocation: { lat: data.lat, lng: data.lng, updatedAt: new Date() },
+                }
+              : r
+          );
+        } else {
+          return [
+            ...prev,
+            {
+              _id: data.riderId,
+              name: data.name || "Rider",
+              vehicleNumber: data.vehicleNumber || "",
+              currentLocation: { lat: data.lat, lng: data.lng, updatedAt: new Date() },
+            },
+          ];
+        }
+      });
     });
 
     const interval = setInterval(fetchLocations, 20000);

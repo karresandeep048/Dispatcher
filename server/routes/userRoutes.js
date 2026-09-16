@@ -40,8 +40,8 @@ router.put("/location", protect, async (req, res) => {
 // @desc    Get real-time locations of all active riders (admin only)
 router.get("/locations", protect, adminOnly, async (req, res) => {
   try {
-    const riders = await User.find({ role: "rider", isActive: true }).select(
-      "name vehicleNumber currentLocation phone"
+    const riders = await User.find({ role: "rider" }).select(
+      "name vehicleNumber currentLocation phone isActive"
     );
     res.json(riders);
   } catch (error) {

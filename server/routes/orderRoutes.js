@@ -79,6 +79,8 @@ router.get("/", protect, async (req, res) => {
       message: error.message,
     });
   }
+});
+
 // Assign Rider to Order (Admin)
 router.put("/:id/assign", protect, adminOnly, async (req, res) => {
   try {

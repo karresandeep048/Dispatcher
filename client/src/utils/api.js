@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "https://dispatcher-backend-pbh9.onrender.com/api";
+export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "https://dispatcher-backend-pbh9.onrender.com";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -14,6 +15,5 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || "http://localhost:5000";
-
 export default api;
+

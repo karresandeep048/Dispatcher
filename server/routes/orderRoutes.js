@@ -79,6 +79,39 @@ router.get("/", protect, async (req, res) => {
       message: error.message,
     });
   }
+// Assign Rider to Order (Admin)
+router.put("/:id/assign", protect, adminOnly, async (req, res) => {
+  try {
+    const { riderId } = req.body;
+
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const rider = await User.findById(riderId);
+    if (!rider || rider.role !== "rider") {
+      return res.status(400).json({ message: "Invalid rider specified" });
+    }
+
+    order.assignedRider = riderId;
+    order.status = "Accepted";
+    order.dispatchedAt = new Date();
+
+    await order.save();
+
+    const updatedOrder = await Order.findById(order._id).populate(
+      "assignedRider",
+      "name vehicleNumber phone"
+    );
+
+    const io = req.app.get("io");
+    io.emit("orderUpdated", updatedOrder);
+
+    res.json(updatedOrder);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 // Rider Accept Order
